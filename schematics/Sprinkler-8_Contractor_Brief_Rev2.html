@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprinkler-8 — Contractor Brief Rev 2</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f1923; color: #dde3ec; font-size: 14px; line-height: 1.6; }
+header { background: #0d2a42; border-bottom: 3px solid #4fc3f7; padding: 20px 32px; }
+header h1 { font-size: 1.8rem; color: #4fc3f7; }
+header p  { color: #90caf9; margin-top: 4px; font-size: 0.95rem; }
+.badge { display: inline-block; background: #1a3a5c; color: #4fc3f7; border: 1px solid #2a5a8c; border-radius: 12px; padding: 2px 12px; font-size: 0.8rem; font-weight: 700; margin-left: 10px; vertical-align: middle; }
+.badge.new { background: #1a3a1a; color: #81c784; border-color: #2a5a2a; }
+.badge.changed { background: #3a2a00; color: #ffb74d; border-color: #5a4200; }
+.toc { background: #0d1f30; border: 1px solid #1a3a5c; border-radius: 8px; padding: 16px 20px; margin: 20px 32px; display: inline-block; min-width: 320px; }
+.toc h3 { color: #90caf9; margin-bottom: 8px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+.toc a { color: #4fc3f7; text-decoration: none; display: block; padding: 2px 0 2px 8px; font-size: 0.9rem; border-left: 2px solid transparent; }
+.toc a:hover { border-left-color: #4fc3f7; }
+main { padding: 0 32px 48px; max-width: 1200px; }
+h2 { color: #4fc3f7; font-size: 1.2rem; margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #1a3a5c; }
+h3 { color: #81c784; font-size: 1.0rem; margin: 22px 0 8px; }
+p { margin-bottom: 10px; color: #b0bec5; }
+ul, ol { margin: 6px 0 12px 20px; color: #b0bec5; }
+li { margin-bottom: 4px; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 0.88rem; }
+th { background: #0d3a5c; color: #4fc3f7; padding: 9px 11px; text-align: left; border: 1px solid #1a4a7a; }
+td { padding: 8px 11px; border: 1px solid #1e2e3e; vertical-align: top; color: #b0bec5; }
+tr:nth-child(even) td { background: #0a1620; }
+tr:hover td { background: #112233; }
+.ref  { color: #ce93d8; font-family: monospace; font-weight: bold; }
+.lcsc { color: #ffb74d; font-family: monospace; }
+.note { color: #90a4ae; font-size: 0.85rem; }
+code  { background: #0a1620; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #a5d6a7; font-size: 0.88rem; }
+.warn { background: #2a1000; border-left: 4px solid #ff7043; padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; }
+.warn strong { color: #ff7043; }
+.info { background: #001a30; border-left: 4px solid #4fc3f7; padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; }
+.info strong { color: #4fc3f7; }
+.tip  { background: #001a00; border-left: 4px solid #81c784; padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; }
+.tip strong { color: #81c784; }
+.change-box { background: #1a2a00; border: 1px solid #4a6a00; border-radius: 6px; padding: 14px 18px; margin: 12px 0; }
+.change-box h4 { color: #c5e1a5; margin-bottom: 8px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.layout-img { width: 100%; max-width: 900px; border: 2px solid #1a3a5c; border-radius: 6px; margin: 16px 0; display: block; }
+.section-tag { display: inline-block; background: #0d3a5c; color: #4fc3f7; border: 1px solid #1a4a7a; border-radius: 12px; padding: 2px 10px; font-size: 0.78rem; font-weight: 700; margin-right: 6px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0; }
+@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+.spec-block { background: #0a1825; border: 1px solid #1a2e40; border-radius: 8px; padding: 14px 16px; }
+.spec-block h4 { color: #4fc3f7; margin-bottom: 8px; font-size: 0.9rem; }
+@media print {
+  body { background: white; color: #111; }
+  th { background: #dde; color: #111; }
+  td, p, li { color: #333; }
+  .warn { background: #fff3f0; }
+  .info { background: #f0f8ff; }
+  .tip  { background: #f0fff0; }
+  a { color: #111; }
+  code { background: #eee; color: #111; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>💧 Sprinkler-8 — Contractor Brief <span class="badge changed">Rev 2</span></h1>
+  <p>8-Zone 24VAC Relay Controller &nbsp;|&nbsp; PCB Design Specification &nbsp;|&nbsp; June 2026</p>
+</header>
+
+<div class="toc">
+  <h3>Contents</h3>
+  <a href="#changes">Changes from Rev 1</a>
+  <a href="#overview">1. System Overview</a>
+  <a href="#layout">2. Board Layout Reference</a>
+  <a href="#power">3. Power Architecture</a>
+  <a href="#zones">4. Zone Output Circuit</a>
+  <a href="#controls">5. User Controls (New)</a>
+  <a href="#connectors">6. Connectors &amp; Terminals</a>
+  <a href="#pcb">7. PCB Requirements</a>
+  <a href="#case">8. Enclosure / Case</a>
+  <a href="#bom">9. Suggested BOM</a>
+</div>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="changes">Changes from Rev 1</h2>
+
+<div class="change-box">
+  <h4>Summary of Rev 2 Changes</h4>
+  <ul>
+    <li><strong>Power input consolidated</strong> to a single 2-position screw terminal (one for 24VAC L1, one for 24VAC L2)</li>
+    <li><strong>Separate fuses</strong> on both L1 and L2 for circuit power; additional 1A fuse on L1 to relay contact commons</li>
+    <li><strong>Zone common return</strong> (J_COM) and 24VAC L2 input are the same electrical point — one terminal serves both</li>
+    <li><strong>8-position screw terminal</strong> replaces individual zone connectors</li>
+    <li><strong>DIP switch added</strong> — 8-position, raised type, labeled "Zones" — for manual zone selection</li>
+    <li><strong>Rotary binary switch added</strong> — 4-position, labeled "Time" — selects run time (15 / 30 / 45 / 60 min)</li>
+    <li><strong>Manual Start button added</strong> — illuminated momentary push button, labeled "Man. Start"</li>
+    <li><strong>PCB extended 25 mm</strong> in terminal direction for case divider clearance</li>
+    <li><strong>Plastic enclosure</strong> specified — split design, top over electronics, bottom over terminals</li>
+    <li>BOM retitled <strong>"Suggested BOM"</strong></li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="overview">1. System Overview</h2>
+
+<p>The Sprinkler-8 is an 8-zone 24VAC irrigation relay controller based on the ESP32-WROOM-32E. It switches eight solenoid zones using relay contacts powered by the 24VAC supply. Rev 2 adds stand-alone manual operation controls (DIP zone select, time rotary switch, start button) directly on the board so the controller can operate without a WiFi connection or mobile device.</p>
+
+<div class="two-col">
+  <div class="spec-block">
+    <h4>Supply</h4>
+    <ul>
+      <li>24VAC, standard irrigation transformer</li>
+      <li>Single 2-position input terminal (L1 + L2)</li>
+      <li>L1 and L2 individually fused</li>
+    </ul>
+  </div>
+  <div class="spec-block">
+    <h4>Outputs</h4>
+    <ul>
+      <li>8 zone outputs via relay NO contacts</li>
+      <li>All relay contact commons fed from 24VAC L1 through a dedicated 1A fuse</li>
+      <li>Zone device common return connects to 24VAC L2 (same terminal as L2 power input)</li>
+    </ul>
+  </div>
+  <div class="spec-block">
+    <h4>Manual Controls (new)</h4>
+    <ul>
+      <li>8-position raised DIP switch — zone select ("Zones")</li>
+      <li>4-position rotary binary switch — time select ("Time")</li>
+      <li>Illuminated push button — manual start ("Man. Start")</li>
+    </ul>
+  </div>
+  <div class="spec-block">
+    <h4>Enclosure</h4>
+    <ul>
+      <li>Plastic split case</li>
+      <li>Top section: encloses board electronics</li>
+      <li>Bottom section: exposes terminal strip and user controls</li>
+      <li>PCB extended 25 mm to provide clearance for internal case divider</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="layout">2. Board Layout Reference</h2>
+
+<p>The image below shows the intended physical arrangement. The board is divided into two zones separated by a clear boundary that aligns with the plastic case divider:</p>
+<ul>
+  <li><strong>Electronics zone (top/rear):</strong> relays, ESP32 module, power supply ICs, UART — not user-accessible</li>
+  <li><strong>Terminal zone (bottom/front):</strong> zone output terminals, power input terminal, DIP switch, rotary switch, push button — user-accessible</li>
+</ul>
+
+<img src="Rough Arrangement.jpg" alt="Board Layout Reference" class="layout-img">
+
+<div class="info">
+  <strong>Note:</strong> The reference image is indicative of the intended layout and component arrangement. Use it as a guide for zone — the exact PCB footprint, spacing, and component placement should follow EasyEDA routing best practice and the mechanical requirements in Section 7.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="power">3. Power Architecture</h2>
+
+<h3>3.1 Input Terminal</h3>
+<p>There is <strong>one 2-position screw terminal</strong> (J_PWR) for the 24VAC supply. One position is 24VAC L1, the other is 24VAC L2. No barrel jack. No power-select jumper.</p>
+
+<table>
+  <tr><th>Terminal</th><th>Label</th><th>Connection</th></tr>
+  <tr><td class="ref">J_PWR pin 1</td><td>24VAC L1</td><td>Fuse F1 (circuit power) and Fuse F3 (zone contact commons)</td></tr>
+  <tr><td class="ref">J_PWR pin 2</td><td>24VAC L2</td><td>Fuse F2 (circuit power return) — same electrical point as J_COM (zone device return)</td></tr>
+</table>
+
+<h3>3.2 Fusing</h3>
+
+<div class="warn">
+  <strong>Both AC legs are independently fused.</strong> Do not share a single fuse across L1 and L2.
+</div>
+
+<table>
+  <tr><th>Ref</th><th>Rating</th><th>Position in Circuit</th><th>Protects</th></tr>
+  <tr><td class="ref">F1</td><td>1A</td><td>24VAC L1 → rectifier bridge D1</td><td>Electronic circuit power (ESP32, relay coils, 5V/3.3V supply)</td></tr>
+  <tr><td class="ref">F2</td><td>1A</td><td>24VAC L2 → rectifier bridge D1</td><td>Electronic circuit power return leg</td></tr>
+  <tr><td class="ref">F3</td><td>1A</td><td>24VAC L1 → relay contact common bus</td><td>Zone output power — protects against wiring faults at solenoid side; independent of F1</td></tr>
+</table>
+
+<p>F1 and F3 both source from 24VAC L1 but are independent fuses. A solenoid wiring fault that blows F3 does not kill the electronics (F1 stays intact, ESP32 keeps running).</p>
+
+<h3>3.3 DC Power Supply (unchanged from Rev 1)</h3>
+<table>
+  <tr><th>Stage</th><th>Device</th><th>Output</th></tr>
+  <tr><td>AC rectification</td><td>MB10F bridge (D1) + 470 µF bulk cap</td><td>~33V DC</td></tr>
+  <tr><td>5V buck</td><td>LM2596S-5.0 (U4)</td><td>5V / 3A</td></tr>
+  <tr><td>3.3V LDO</td><td>AMS1117-3.3 (U3)</td><td>3.3V for ESP32</td></tr>
+</table>
+
+<h3>3.4 Common Return — J1 / J2 Same Point</h3>
+<p>In Rev 1, the zone device common return (J2) and the 24VAC L2 input were separate terminals. In Rev 2 <strong>they are the same electrical point</strong> — 24VAC L2 enters at J_PWR pin 2 and that net also connects directly to J_COM (the zone common return terminal). Only one physical terminal is needed. Label it <code>COM / L2</code> on the silkscreen.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="zones">4. Zone Output Circuit</h2>
+
+<h3>4.1 Relay Contact Wiring</h3>
+<table>
+  <tr><th>Net</th><th>Description</th></tr>
+  <tr><td>ZONE_PWR_BUS</td><td>24VAC L1 → F3 (1A) → relay K1–K8 contact COM pins (all 8 relay commons bussed together)</td></tr>
+  <tr><td>ZONE_1 … ZONE_8</td><td>Relay K1–K8 NO contacts → J_ZONES terminals 1–8</td></tr>
+  <tr><td>ZONE_COM_RET</td><td>J_COM terminal (24VAC L2) — external device solenoid returns connect here</td></tr>
+</table>
+
+<div class="tip">
+  <strong>Solenoid wiring:</strong> Each irrigation solenoid connects between one ZONE_n terminal and the ZONE_COM_RET (J_COM) terminal. When the relay closes, 24VAC flows through the solenoid and returns via the common.
+</div>
+
+<h3>4.2 Zone Output Terminal</h3>
+<p>One <strong>8-position 3.5 mm screw terminal block</strong> (J_ZONES) with positions labeled Z1–Z8. Placed at the edge of the terminal zone, accessible from outside the case.</p>
+
+<h3>4.3 MOV Snubbers</h3>
+<p>Retain one 47V MOV disc (RV1–RV8) across each relay NO contact and COM. Solenoid inductive kick protection.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="controls">5. User Controls (New in Rev 2)</h2>
+
+<h3>5.1 Zone Select DIP Switch &nbsp;<span class="badge new">NEW</span></h3>
+<table>
+  <tr><th>Item</th><th>Specification</th></tr>
+  <tr><td>Type</td><td>8-position DIP switch, <strong>raised (piano-key) style</strong> — switches should protrude enough to be operated without a tool</td></tr>
+  <tr><td>Ref</td><td>SW_DIP</td></tr>
+  <tr><td>Silkscreen label</td><td><strong>"Zones"</strong> above switch; positions labeled 1–8 below each switch</td></tr>
+  <tr><td>Function</td><td>Each switch selects the corresponding zone for manual operation. ESP32 reads switch state on GPIO inputs. Multiple zones may be selected simultaneously.</td></tr>
+  <tr><td>Pull configuration</td><td>Each input pulled high; switch closes to GND. Active LOW logic.</td></tr>
+  <tr><td>Package</td><td>Through-hole or SMD — confirm footprint clears case lid clearance</td></tr>
+</table>
+
+<h3>5.2 Time Select Rotary Switch &nbsp;<span class="badge new">NEW</span></h3>
+<table>
+  <tr><th>Item</th><th>Specification</th></tr>
+  <tr><td>Type</td><td>4-position binary-coded rotary switch (BCD output)</td></tr>
+  <tr><td>Ref</td><td>SW_ROT</td></tr>
+  <tr><td>Silkscreen label</td><td><strong>"Time"</strong> above switch; time values printed at each detent position</td></tr>
+  <tr><td>Positions</td><td>
+    <code>0</code> = 15 minutes<br>
+    <code>1</code> = 30 minutes<br>
+    <code>2</code> = 45 minutes<br>
+    <code>3</code> = 60 minutes (1 hr)
+  </td></tr>
+  <tr><td>Output</td><td>2-bit BCD to ESP32 GPIO (2 signal lines + common GND)</td></tr>
+  <tr><td>Style</td><td>Panel-mount with knob, or PCB-mount with flat-blade slot — panel-mount preferred for ease of use</td></tr>
+</table>
+
+<div class="info">
+  <strong>Silkscreen text at each position:</strong> Print <code>15</code>, <code>30</code>, <code>45</code>, <code>60</code> at the corresponding detent marks around the rotary body. Use <code>min</code> suffix if space allows.
+</div>
+
+<h3>5.3 Manual Start Button &nbsp;<span class="badge new">NEW</span></h3>
+<table>
+  <tr><th>Item</th><th>Specification</th></tr>
+  <tr><td>Type</td><td>Illuminated momentary push button — <strong>green LED</strong>, 22mm or 16mm panel diameter</td></tr>
+  <tr><td>Ref</td><td>SW_START</td></tr>
+  <tr><td>Silkscreen label</td><td><strong>"Man. Start"</strong></td></tr>
+  <tr><td>Function</td><td>Triggers a manual run of all zones selected on SW_DIP, for the duration set on SW_ROT. Press once to start; press again to stop.</td></tr>
+  <tr><td>LED drive</td><td>ESP32 GPIO → 330Ω → LED anode (button illuminated when run is active)</td></tr>
+  <tr><td>Contact</td><td>Normally open, momentary. Input to ESP32 GPIO, pulled high — press = LOW.</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="connectors">6. Connectors &amp; Terminals</h2>
+
+<table>
+  <tr><th>Ref</th><th>Type</th><th>Positions</th><th>Label</th><th>Notes</th></tr>
+  <tr>
+    <td class="ref">J_PWR</td>
+    <td>3.5 mm screw terminal</td>
+    <td>2</td>
+    <td>24VAC L1 / L2</td>
+    <td class="note">Single power input. Replaces barrel jack + screw terminal combo from Rev 1. Located in terminal zone, accessible from outside case.</td>
+  </tr>
+  <tr>
+    <td class="ref">J_ZONES</td>
+    <td>3.5 mm screw terminal</td>
+    <td>8</td>
+    <td>Z1–Z8</td>
+    <td class="note">Zone relay outputs. Each terminal = NO contact of relay K1–K8.</td>
+  </tr>
+  <tr>
+    <td class="ref">J_COM</td>
+    <td>3.5 mm screw terminal</td>
+    <td>2</td>
+    <td>COM / L2</td>
+    <td class="note">Zone device common return. Electrically same node as J_PWR L2. Two terminals provided for convenience (daisy-chain wiring).</td>
+  </tr>
+  <tr>
+    <td class="ref">J1 (USB-C)</td>
+    <td>USB-C 16-pin</td>
+    <td>—</td>
+    <td>USB</td>
+    <td class="note">Programming only. Located on electronics side of board (not user-accessible through case).</td>
+  </tr>
+  <tr>
+    <td class="ref">SW1</td>
+    <td>6mm tact switch</td>
+    <td>—</td>
+    <td>BOOT</td>
+    <td class="note">Internal access only (for firmware flashing). Does not need to be accessible through case.</td>
+  </tr>
+  <tr>
+    <td class="ref">SW2</td>
+    <td>6mm tact switch</td>
+    <td>—</td>
+    <td>RST</td>
+    <td class="note">Reset. Can be recessed or internal.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="pcb">7. PCB Requirements</h2>
+
+<h3>7.1 Board Extension for Case Divider</h3>
+
+<div class="warn">
+  <strong>Critical dimension:</strong> The terminal zone must extend <strong>25 mm beyond the edge of the electronics zone</strong>. This 25 mm clearance is required to fit the internal plastic case divider wall between the two zones without interfering with any components.
+</div>
+
+<p>Place all screw terminals (J_PWR, J_ZONES, J_COM), SW_DIP, SW_ROT, and SW_START within the terminal zone. No active electronics or relay bodies should be within 5 mm of the divider boundary on either side.</p>
+
+<h3>7.2 Zone Boundary</h3>
+<p>Mark the electronics / terminal divider boundary clearly on the silkscreen layer with a dashed line. This line should align with where the physical case divider wall will sit.</p>
+
+<h3>7.3 Layer Stack and General Rules</h3>
+<ul>
+  <li>2-layer PCB minimum. 4-layer preferred if routing density requires.</li>
+  <li>ESP32 antenna keep-out: 15 mm clear zone on all layers around module antenna end.</li>
+  <li>Relay switching loop (LM2596 buck) kept physically tight — no signal traces in that region.</li>
+  <li>GPIO12 must have a 10 kΩ pull-down resistor to GND (strapping pin — see Rev 1 spec).</li>
+  <li>ULN2803A COM pin (pin 10) must connect to +5V.</li>
+  <li>Terminals J_ZONES and J_COM placed at one long edge so wire routing exits cleanly from the case.</li>
+</ul>
+
+<h3>7.4 New GPIO Allocations (Rev 2)</h3>
+<p>The following GPIOs are added in Rev 2 for the new user controls. Confirm with firmware team before finalising layout.</p>
+
+<table>
+  <tr><th>GPIO</th><th>Function</th><th>Direction</th><th>Notes</th></tr>
+  <tr><td>TBD × 8</td><td>SW_DIP zone inputs (D1–D8)</td><td>Input, pull-up</td><td>Active LOW. Use GPIO expander (e.g. MCP23008) if available GPIOs are limited.</td></tr>
+  <tr><td>TBD × 2</td><td>SW_ROT rotary A, B outputs</td><td>Input</td><td>2-bit BCD. Active LOW or HIGH depending on rotary type — confirm with part datasheet.</td></tr>
+  <tr><td>TBD</td><td>SW_START button input</td><td>Input, pull-up</td><td>Active LOW, momentary.</td></tr>
+  <tr><td>TBD</td><td>SW_START LED drive</td><td>Output</td><td>330 Ω series resistor to LED anode inside button.</td></tr>
+</table>
+
+<div class="info">
+  <strong>GPIO availability:</strong> The existing relay assignments (GPIO 32, 33, 25, 26, 27, 14, 12, 13), status LED (GPIO 23), and BOOT (GPIO 0) are already allocated. If the remaining GPIOs are insufficient for all DIP switch inputs, use an I²C GPIO expander on the board (MCP23008 or PCF8574) — firmware team to confirm preferred approach.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="case">8. Enclosure / Case</h2>
+
+<h3>8.1 Split Design</h3>
+<p>The enclosure is a two-part plastic snap or screw-together shell:</p>
+
+<table>
+  <tr><th>Section</th><th>Covers</th><th>Access</th></tr>
+  <tr>
+    <td><strong>Top / Electronics half</strong></td>
+    <td>Relays, ESP32, power supply, UART — all active electronics</td>
+    <td>Closed — no user access required during normal operation. USB-C port may have a cut-out or remain internal.</td>
+  </tr>
+  <tr>
+    <td><strong>Bottom / Terminal half</strong></td>
+    <td>Screw terminals (J_PWR, J_ZONES, J_COM), DIP switch, rotary switch, push button</td>
+    <td>Open front or open bottom — terminals must be accessible for wire connection. Controls (DIP, rotary, button) must be operable without removing the case.</td>
+  </tr>
+</table>
+
+<h3>8.2 Divider Wall</h3>
+<p>An internal wall integral to the case sits between the electronics and terminal zones. This wall:</p>
+<ul>
+  <li>Provides a physical barrier between mains-derived voltages at the terminals and the low-voltage electronics</li>
+  <li>Aligns with the 25 mm extended PCB boundary (see Section 7.1)</li>
+  <li>Has slots or notches for the wiring that crosses between zones (relay contact wiring to terminals)</li>
+</ul>
+
+<h3>8.3 Material and Finish</h3>
+<ul>
+  <li>ABS or PC plastic, flame-retardant grade (UL94 V-0 preferred)</li>
+  <li>Light grey or off-white — no specific colour requirement but avoid dark colours that make terminal labeling hard to read</li>
+  <li>DIN rail mounting clip on the base is desirable but not required</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="bom">9. Suggested BOM</h2>
+
+<p>This is a <strong>suggested</strong> BOM. Substitutions are acceptable provided the electrical and mechanical specifications are met. Search EasyEDA library by LCSC C-number for exact symbol and footprint match.</p>
+
+<h3>ICs &amp; Modules (unchanged from Rev 1)</h3>
+<table>
+  <tr><th>Ref</th><th>Description</th><th>LCSC</th><th>Qty</th><th>Notes</th></tr>
+  <tr><td class="ref">U1</td><td>ESP32-WROOM-32E module</td><td class="lcsc">C701341</td><td>1</td><td class="note">4MB flash. Antenna keep-out 15mm.</td></tr>
+  <tr><td class="ref">U2</td><td>CH340C USB-UART converter</td><td class="lcsc">C84681</td><td>1</td><td class="note">No external crystal needed.</td></tr>
+  <tr><td class="ref">U3</td><td>AMS1117-3.3 LDO</td><td class="lcsc">C6186</td><td>1</td><td class="note">3.3V output.</td></tr>
+  <tr><td class="ref">U4</td><td>LM2596S-5.0 buck converter</td><td class="lcsc">C2621</td><td>1</td><td class="note">Fixed 5V, 3A, 40V input max.</td></tr>
+  <tr><td class="ref">U5</td><td>ULN2803A Darlington array</td><td class="lcsc">C56026</td><td>1</td><td class="note">COM pin (10) MUST connect to +5V.</td></tr>
+</table>
+
+<h3>Relays &amp; Semiconductors</h3>
+<table>
+  <tr><th>Ref</th><th>Description</th><th>LCSC</th><th>Qty</th><th>Notes</th></tr>
+  <tr><td class="ref">K1–K8</td><td>HF46F-G/5-HS1 relay, 5V SMD</td><td class="lcsc">C165255</td><td>8</td><td class="note">SPST-NO. Do not substitute — verify C165255 not C128511.</td></tr>
+  <tr><td class="ref">D1</td><td>MB10F bridge rectifier</td><td class="lcsc">C441951</td><td>1</td><td class="note">1A, 1000V. 24VAC → ~33VDC.</td></tr>
+  <tr><td class="ref">D2</td><td>1N5822 Schottky diode</td><td class="lcsc">Verify on LCSC</td><td>1</td><td class="note">LM2596 catch diode, 3A 40V.</td></tr>
+  <tr><td class="ref">D3</td><td>USBLC6-2SC6 ESD protection</td><td class="lcsc">C2827693</td><td>1</td><td class="note">USB D+/D− protection.</td></tr>
+  <tr><td class="ref">Q1, Q2</td><td>MMBT3904 NPN transistor</td><td class="lcsc">C20526</td><td>2</td><td class="note">Auto-reset circuit for ESP32.</td></tr>
+  <tr><td class="ref">RV1–RV8</td><td>MOV 47V disc snubber</td><td class="lcsc">Search: MOV 47V</td><td>8</td><td class="note">Across each relay contact output. Solenoid protection.</td></tr>
+</table>
+
+<h3>New Components — Rev 2</h3>
+<table>
+  <tr><th>Ref</th><th>Description</th><th>Suggested Part</th><th>Qty</th><th>Notes</th></tr>
+  <tr>
+    <td class="ref">SW_DIP</td>
+    <td>8-position DIP switch, raised/piano-key style</td>
+    <td>CUI Devices CT2088 or equivalent; search LCSC "8P DIP raised"</td>
+    <td>1</td>
+    <td class="note">Switches must protrude enough to operate by hand. Confirm height fits below case lid.</td>
+  </tr>
+  <tr>
+    <td class="ref">SW_ROT</td>
+    <td>4-position binary rotary switch (BCD)</td>
+    <td>Bourns ECR4032 or Nidec 6-5009 series; search LCSC "BCD rotary switch 4 position"</td>
+    <td>1</td>
+    <td class="note">Panel-mount with knob preferred. Must have clear detents at 4 positions. Print 15/30/45/60 on silkscreen at each detent.</td>
+  </tr>
+  <tr>
+    <td class="ref">SW_START</td>
+    <td>22mm illuminated momentary push button, green</td>
+    <td>Apem LP01 series, Idec AB6M-M1G, or equivalent; search LCSC "22mm push button illuminated green"</td>
+    <td>1</td>
+    <td class="note">Panel-mount. Green LED, momentary NO contact. LED driven from ESP32 GPIO via 330Ω. Button size: confirm fits PCB terminal zone width.</td>
+  </tr>
+  <tr>
+    <td class="ref">F1, F2</td>
+    <td>1A PTC polyfuse (AC circuit legs L1 &amp; L2)</td>
+    <td>Littelfuse 1812L or equivalent; search LCSC "PTC 1A"</td>
+    <td>2</td>
+    <td class="note">Replaces single F1 from Rev 1. One fuse per AC leg.</td>
+  </tr>
+  <tr>
+    <td class="ref">F3</td>
+    <td>1A PTC polyfuse (relay contact commons)</td>
+    <td>Same as F1/F2</td>
+    <td>1</td>
+    <td class="note">New in Rev 2. On 24VAC L1 path to relay NO contact common bus. Independent of F1.</td>
+  </tr>
+</table>
+
+<h3>Connectors &amp; Switches</h3>
+<table>
+  <tr><th>Ref</th><th>Description</th><th>LCSC</th><th>Qty</th><th>Notes</th></tr>
+  <tr><td class="ref">J_PWR</td><td>2-position 3.5mm screw terminal</td><td class="lcsc">C8465 or similar</td><td>1</td><td class="note">Replaces barrel jack. Label 24VAC L1 / L2.</td></tr>
+  <tr><td class="ref">J_ZONES</td><td>8-position 3.5mm screw terminal</td><td class="lcsc">8× C8465 ganged, or 8-position block</td><td>1</td><td class="note">Label Z1–Z8.</td></tr>
+  <tr><td class="ref">J_COM</td><td>2-position 3.5mm screw terminal</td><td class="lcsc">C8465 or similar</td><td>1</td><td class="note">Label COM / L2. Both pins same node — two terminals for convenient wiring.</td></tr>
+  <tr><td class="ref">J1 (USB-C)</td><td>USB-C receptacle 16-pin</td><td class="lcsc">C165948</td><td>1</td><td class="note">Programming port. CC1/CC2 → 5.1kΩ to GND.</td></tr>
+  <tr><td class="ref">SW1</td><td>BOOT push button 6mm</td><td class="lcsc">C318884</td><td>1</td><td class="note">IO0 to GND. Internal access.</td></tr>
+  <tr><td class="ref">SW2</td><td>RST push button 6mm</td><td class="lcsc">C318884</td><td>1</td><td class="note">EN to GND. Internal access.</td></tr>
+</table>
+
+<h3>Passives &amp; Indicators</h3>
+<table>
+  <tr><th>Ref</th><th>Value</th><th>Pkg</th><th>Qty</th><th>Notes</th></tr>
+  <tr><td class="ref">LED1–LED8</td><td>Red LED 0805</td><td class="lcsc">C84256</td><td>8</td><td class="note">Zone active indicators. +5V via 470Ω.</td></tr>
+  <tr><td class="ref">LED9</td><td>Green LED 0805</td><td class="lcsc">C72043</td><td>1</td><td class="note">Board status indicator. GPIO23 → 330Ω → anode.</td></tr>
+  <tr><td class="ref">R1, R2</td><td>5.1 kΩ</td><td>0402</td><td>2</td><td class="note">USB-C CC1/CC2 to GND.</td></tr>
+  <tr><td class="ref">R3, R4</td><td>10 kΩ</td><td>0402</td><td>2</td><td class="note">IO0 and EN pull-ups to 3.3V.</td></tr>
+  <tr><td class="ref">R5</td><td>10 kΩ</td><td>0402</td><td>1</td><td class="note">GPIO12 pull-down to GND — CRITICAL, strapping pin.</td></tr>
+  <tr><td class="ref">R6, R7</td><td>10 kΩ</td><td>0402</td><td>2</td><td class="note">Q1/Q2 base resistors (auto-reset).</td></tr>
+  <tr><td class="ref">R8–R15</td><td>470 Ω</td><td>0805</td><td>8</td><td class="note">Zone LED current limit.</td></tr>
+  <tr><td class="ref">R16</td><td>330 Ω</td><td>0805</td><td>1</td><td class="note">Status LED (LED9) current limit.</td></tr>
+  <tr><td class="ref">R17</td><td>330 Ω</td><td>0805</td><td>1</td><td class="note">Man. Start button LED current limit (SW_START).</td></tr>
+  <tr><td class="ref">R18–R25</td><td>10 kΩ</td><td>0402</td><td>8</td><td class="note">DIP switch pull-ups (one per switch position).</td></tr>
+  <tr><td class="ref">C1</td><td>470 µF 50V electrolytic</td><td>Radial</td><td>1</td><td class="note">Bulk filter after bridge rectifier.</td></tr>
+  <tr><td class="ref">C2</td><td>220 µF 10V electrolytic</td><td>Radial</td><td>1</td><td class="note">LM2596 output filter.</td></tr>
+  <tr><td class="ref">C3–C10</td><td>10 µF / 22 µF / 100 nF (see Rev 1 spec)</td><td>0402–0603</td><td>8</td><td class="note">Decoupling caps per Rev 1 netlist.</td></tr>
+  <tr><td class="ref">L1</td><td>100 µH, 1A+</td><td>SMD/THT</td><td>1</td><td class="note">LM2596 switching inductor.</td></tr>
+</table>
+
+<div class="tip">
+  <strong>LCSC Basic Parts:</strong> Where possible, choose parts marked "Basic" in LCSC/JLCPCB to minimise extended component surcharges on PCB assembly orders.
+</div>
+
+</main>
+</body>
+</html>
