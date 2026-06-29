@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprinkler-8 — Wiring Diagram Rev 2</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0f1923; padding: 24px; font-family: 'Segoe UI', Arial, sans-serif; }
+h1  { color: #4fc3f7; font-size: 1.4rem; margin-bottom: 4px; }
+p   { color: #90caf9; font-size: 0.88rem; margin-bottom: 16px; }
+svg { display: block; width: 100%; height: auto; max-width: 1300px; }
+@media print {
+  body { background: white; padding: 8px; }
+  h1 { color: #000; } p { color: #444; }
+}
+</style>
+</head>
+<body>
+<h1>Sprinkler-8 — Wiring Diagram &nbsp;|&nbsp; Rev 2</h1>
+<p>Functional block diagram showing all electrical connections &nbsp;|&nbsp; Not a schematic &nbsp;|&nbsp; June 2026</p>
+
+<svg viewBox="0 0 1300 900" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+<defs>
+  <!-- Arrow markers in various colors -->
+  <marker id="a-ac"  markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#ffb74d"/></marker>
+  <marker id="a-5v"  markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#ef5350"/></marker>
+  <marker id="a-3v"  markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#ce93d8"/></marker>
+  <marker id="a-sig" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#4fc3f7"/></marker>
+  <marker id="a-gnd" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#66bb6a"/></marker>
+  <marker id="a-out" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#a5d6a7"/></marker>
+  <marker id="a-ctl" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#81d4fa"/></marker>
+
+  <!-- Legend box background -->
+</defs>
+
+<!-- ══════════════════════════════════════════════════════════════
+     LEGEND
+══════════════════════════════════════════════════════════════ -->
+<rect x="1060" y="20" width="220" height="200" rx="6" fill="#0a1620" stroke="#1a3a5c" stroke-width="1.5"/>
+<text x="1170" y="42" text-anchor="middle" fill="#4fc3f7" font-size="12" font-weight="bold">LEGEND</text>
+<line x1="1078" y1="56" x2="1118" y2="56" stroke="#ffb74d" stroke-width="3" marker-end="url(#a-ac)"/>
+<text x="1130" y="61" fill="#ffb74d" font-size="11">24 VAC</text>
+<line x1="1078" y1="78" x2="1118" y2="78" stroke="#ef5350" stroke-width="3" marker-end="url(#a-5v)"/>
+<text x="1130" y="83" fill="#ef5350" font-size="11">+5 V DC</text>
+<line x1="1078" y1="100" x2="1118" y2="100" stroke="#ce93d8" stroke-width="3" marker-end="url(#a-3v)"/>
+<text x="1130" y="105" fill="#ce93d8" font-size="11">+3.3 V DC</text>
+<line x1="1078" y1="122" x2="1118" y2="122" stroke="#66bb6a" stroke-width="3" marker-end="url(#a-gnd)"/>
+<text x="1130" y="127" fill="#66bb6a" font-size="11">GND / COM return</text>
+<line x1="1078" y1="144" x2="1118" y2="144" stroke="#4fc3f7" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#a-sig)"/>
+<text x="1130" y="149" fill="#4fc3f7" font-size="11">GPIO signal</text>
+<line x1="1078" y1="166" x2="1118" y2="166" stroke="#a5d6a7" stroke-width="3" marker-end="url(#a-out)"/>
+<text x="1130" y="171" fill="#a5d6a7" font-size="11">Zone output (24VAC)</text>
+<line x1="1078" y1="188" x2="1118" y2="188" stroke="#81d4fa" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#a-ctl)"/>
+<text x="1130" y="193" fill="#81d4fa" font-size="11">Control input</text>
+<line x1="1078" y1="210" x2="1118" y2="210" stroke="#ff7043" stroke-width="3" marker-end="url(#a-ac)"/>
+<text x="1130" y="215" fill="#ff7043" font-size="11">Zone pwr bus (L1)</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     24VAC INPUT BLOCK  (top left)
+══════════════════════════════════════════════════════════════ -->
+<rect x="20" y="30" width="180" height="110" rx="8" fill="#2a1a00" stroke="#ffb74d" stroke-width="2"/>
+<text x="110" y="55"  text-anchor="middle" fill="#ffb74d" font-size="13" font-weight="bold">24 VAC SOURCE</text>
+<text x="110" y="74"  text-anchor="middle" fill="#ffb74d" font-size="10">Irrigation transformer</text>
+<text x="110" y="92"  text-anchor="middle" fill="white"   font-size="11" font-weight="bold">L1</text>
+<text x="110" y="108" text-anchor="middle" fill="white"   font-size="11" font-weight="bold">L2</text>
+<text x="110" y="131" text-anchor="middle" fill="#ffb74d" font-size="10">(J_PWR terminal)</text>
+
+<!-- L1 wire going right from source -->
+<line x1="200" y1="92"  x2="270" y2="92"  stroke="#ffb74d" stroke-width="3" marker-end="url(#a-ac)"/>
+<text x="233" y="86" text-anchor="middle" fill="#ffb74d" font-size="10">L1</text>
+
+<!-- L2 wire going right -->
+<line x1="200" y1="108" x2="270" y2="108" stroke="#ffb74d" stroke-width="3" marker-end="url(#a-ac)"/>
+<text x="233" y="122" text-anchor="middle" fill="#ffb74d" font-size="10">L2</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FUSE BLOCK
+══════════════════════════════════════════════════════════════ -->
+<rect x="270" y="30" width="160" height="190" rx="8" fill="#2a1a00" stroke="#ffb74d" stroke-width="2"/>
+<text x="350" y="52" text-anchor="middle" fill="#ffb74d" font-size="12" font-weight="bold">FUSES</text>
+
+<!-- F1 -->
+<rect x="284" y="62" width="132" height="30" rx="14" fill="#3a2000" stroke="#ffb74d" stroke-width="2"/>
+<text x="350" y="82" text-anchor="middle" fill="#ffb74d" font-size="11" font-weight="bold">F1 — 1A</text>
+<text x="350" y="104" text-anchor="middle" fill="#90a4ae" font-size="9">L1 circuit power</text>
+
+<!-- F2 -->
+<rect x="284" y="116" width="132" height="30" rx="14" fill="#3a2000" stroke="#ffb74d" stroke-width="2"/>
+<text x="350" y="136" text-anchor="middle" fill="#ffb74d" font-size="11" font-weight="bold">F2 — 1A</text>
+<text x="350" y="158" text-anchor="middle" fill="#90a4ae" font-size="9">L2 circuit return</text>
+
+<!-- F3 (zone) -->
+<rect x="284" y="172" width="132" height="30" rx="14" fill="#3a0000" stroke="#ff7043" stroke-width="2"/>
+<text x="350" y="192" text-anchor="middle" fill="#ff7043" font-size="11" font-weight="bold">F3 — 1A</text>
+<text x="350" y="214" text-anchor="middle" fill="#90a4ae" font-size="9">Zone contact commons</text>
+
+<!-- F1 out → to DC supply -->
+<line x1="430" y1="77"  x2="490" y2="77"  stroke="#ffb74d" stroke-width="3" marker-end="url(#a-ac)"/>
+<!-- F2 out → to DC supply -->
+<line x1="430" y1="131" x2="490" y2="131" stroke="#ffb74d" stroke-width="3" marker-end="url(#a-ac)"/>
+<!-- F3 out → to relay commons bus -->
+<line x1="430" y1="187" x2="490" y2="187" stroke="#ff7043" stroke-width="3" marker-end="url(#a-ac)"/>
+<text x="460" y="200" text-anchor="middle" fill="#ff7043" font-size="9">Zone pwr L1</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     DC POWER SUPPLY CHAIN
+══════════════════════════════════════════════════════════════ -->
+
+<!-- Bridge rectifier D1 -->
+<rect x="490" y="44" width="120" height="80" rx="6" fill="#2a1a4a" stroke="#ce93d8" stroke-width="1.5"/>
+<text x="550" y="72"  text-anchor="middle" fill="white"   font-size="11" font-weight="bold">MB10F</text>
+<text x="550" y="88"  text-anchor="middle" fill="white"   font-size="9">Bridge rectifier</text>
+<text x="550" y="103" text-anchor="middle" fill="#ce93d8" font-size="9">D1</text>
+<text x="550" y="116" text-anchor="middle" fill="#90a4ae" font-size="8">24VAC → ~33V DC</text>
+<!-- D1 out → LM2596 -->
+<line x1="610" y1="84" x2="650" y2="84" stroke="#ef5350" stroke-width="3" marker-end="url(#a-5v)"/>
+<text x="629" y="78" text-anchor="middle" fill="#ef5350" font-size="9">~33V</text>
+
+<!-- LM2596 Buck converter -->
+<rect x="650" y="44" width="130" height="80" rx="6" fill="#1a2a4a" stroke="#90a4d4" stroke-width="1.5"/>
+<text x="715" y="70"  text-anchor="middle" fill="white"   font-size="11" font-weight="bold">LM2596-5.0</text>
+<text x="715" y="86"  text-anchor="middle" fill="white"   font-size="9">5V / 3A buck</text>
+<text x="715" y="101" text-anchor="middle" fill="#90a4d4" font-size="9">U4</text>
+<text x="715" y="115" text-anchor="middle" fill="#90a4ae" font-size="8">L1 + C2 on output</text>
+<!-- LM2596 → +5V bus -->
+<line x1="780" y1="84" x2="820" y2="84" stroke="#ef5350" stroke-width="3" marker-end="url(#a-5v)"/>
+<text x="799" y="78" text-anchor="middle" fill="#ef5350" font-size="10" font-weight="bold">+5V</text>
+
+<!-- +5V bus line (vertical) -->
+<line x1="840" y1="84" x2="840" y2="560" stroke="#ef5350" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="848" y="100" fill="#ef5350" font-size="9">+5V bus</text>
+
+<!-- AMS1117 3.3V LDO -->
+<rect x="820" y="44" width="130" height="72" rx="6" fill="#1a2a4a" stroke="#90a4d4" stroke-width="1.5"/>
+<text x="885" y="68"  text-anchor="middle" fill="white"   font-size="11" font-weight="bold">AMS1117-3.3</text>
+<text x="885" y="84"  text-anchor="middle" fill="white"   font-size="9">3.3V LDO</text>
+<text x="885" y="99"  text-anchor="middle" fill="#90a4d4" font-size="9">U3</text>
+<!-- AMS1117 → +3.3V -->
+<line x1="950" y1="80" x2="990" y2="80" stroke="#ce93d8" stroke-width="3" marker-end="url(#a-3v)"/>
+<text x="969" y="74" text-anchor="middle" fill="#ce93d8" font-size="10" font-weight="bold">+3.3V</text>
+
+<!-- +3.3V bus -->
+<line x1="1010" y1="80" x2="1010" y2="360" stroke="#ce93d8" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="1018" y="98" fill="#ce93d8" font-size="9">+3.3V bus</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     RELAY COMMONS BUS   (horizontal orange bar)
+══════════════════════════════════════════════════════════════ -->
+<rect x="490" y="174" width="500" height="26" rx="6" fill="#3a0000" stroke="#ff7043" stroke-width="2"/>
+<text x="740" y="192" text-anchor="middle" fill="#ff7043" font-size="11" font-weight="bold">RELAY CONTACT COMMONS BUS (24VAC L1 via F3)</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     ULN2803A  (relay coil driver)
+══════════════════════════════════════════════════════════════ -->
+<rect x="490" y="240" width="140" height="120" rx="6" fill="#1a2a4a" stroke="#90a4d4" stroke-width="1.5"/>
+<text x="560" y="268" text-anchor="middle" fill="white"   font-size="12" font-weight="bold">ULN2803A</text>
+<text x="560" y="284" text-anchor="middle" fill="white"   font-size="9">8-ch Darlington driver</text>
+<text x="560" y="300" text-anchor="middle" fill="#90a4d4" font-size="9">U5</text>
+<text x="560" y="318" text-anchor="middle" fill="#90a4ae" font-size="8">IN ← ESP32 GPIOs</text>
+<text x="560" y="332" text-anchor="middle" fill="#90a4ae" font-size="8">OUT → relay coils</text>
+<text x="560" y="346" text-anchor="middle" fill="#ff9800" font-size="8">COM (pin10) → +5V !</text>
+<!-- +5V to ULN2803 COM -->
+<line x1="840" y1="200" x2="840" y2="290" stroke="#ef5350" stroke-width="2" stroke-dasharray="4,3"/>
+<line x1="840" y1="290" x2="630" y2="290" stroke="#ef5350" stroke-width="2" marker-end="url(#a-5v)"/>
+<text x="735" y="284" text-anchor="middle" fill="#ef5350" font-size="9">+5V (COM)</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     RELAY ARRAY K1-K8
+══════════════════════════════════════════════════════════════ -->
+<rect x="690" y="230" width="310" height="130" rx="6" fill="#12234a" stroke="#3a5a9e" stroke-width="1.5"/>
+<text x="845" y="252" text-anchor="middle" fill="#90a4d4" font-size="11" font-weight="bold">K1 – K8  (HF46F × 8)</text>
+
+<!-- 8 tiny relay symbols -->
+<g fill="#1e2e5e" stroke="#7986cb" stroke-width="1" font-size="9" font-family="Arial">
+  <rect x="698" y="260" width="30" height="40" rx="2"/>
+  <text x="713" y="285" text-anchor="middle" fill="white">K1</text>
+  <rect x="733" y="260" width="30" height="40" rx="2"/>
+  <text x="748" y="285" text-anchor="middle" fill="white">K2</text>
+  <rect x="768" y="260" width="30" height="40" rx="2"/>
+  <text x="783" y="285" text-anchor="middle" fill="white">K3</text>
+  <rect x="803" y="260" width="30" height="40" rx="2"/>
+  <text x="818" y="285" text-anchor="middle" fill="white">K4</text>
+  <rect x="838" y="260" width="30" height="40" rx="2"/>
+  <text x="853" y="285" text-anchor="middle" fill="white">K5</text>
+  <rect x="873" y="260" width="30" height="40" rx="2"/>
+  <text x="888" y="285" text-anchor="middle" fill="white">K6</text>
+  <rect x="908" y="260" width="30" height="40" rx="2"/>
+  <text x="923" y="285" text-anchor="middle" fill="white">K7</text>
+  <rect x="943" y="260" width="30" height="40" rx="2"/>
+  <text x="958" y="285" text-anchor="middle" fill="white">K8</text>
+</g>
+<text x="845" y="346" text-anchor="middle" fill="#90a4ae" font-size="8">Coil+: → +5V bus  |  Coil−: → ULN2803A output</text>
+
+<!-- ULN → Relays (coil signal) -->
+<line x1="630" y1="268" x2="690" y2="268" stroke="#4fc3f7" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#a-sig)"/>
+<text x="658" y="260" text-anchor="middle" fill="#4fc3f7" font-size="9">coil−</text>
+
+<!-- +5V → Relay coil+ -->
+<line x1="840" y1="230" x2="840" y2="230" stroke="#ef5350" stroke-width="2"/>
+<!-- Arrow from +5V bus down to relay coil+ area -->
+<line x1="840" y1="200" x2="845" y2="230" stroke="#ef5350" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#a-5v)"/>
+
+<!-- Relay NO contacts out (vertical down from relay commons bus) -->
+<!-- From commons bus to each relay -->
+<g stroke="#ff7043" stroke-width="1.5" fill="none">
+  <line x1="713" y1="200" x2="713" y2="260"/>
+  <line x1="748" y1="200" x2="748" y2="260"/>
+  <line x1="783" y1="200" x2="783" y2="260"/>
+  <line x1="818" y1="200" x2="818" y2="260"/>
+  <line x1="853" y1="200" x2="853" y2="260"/>
+  <line x1="888" y1="200" x2="888" y2="260"/>
+  <line x1="923" y1="200" x2="923" y2="260"/>
+  <line x1="958" y1="200" x2="958" y2="260"/>
+</g>
+
+<!-- Relay NO contacts → Zone outputs (down from relays) -->
+<g stroke="#a5d6a7" stroke-width="2" fill="none" marker-end="url(#a-out)">
+  <line x1="713" y1="300" x2="713" y2="480"/>
+  <line x1="748" y1="300" x2="748" y2="480"/>
+  <line x1="783" y1="300" x2="783" y2="480"/>
+  <line x1="818" y1="300" x2="818" y2="480"/>
+  <line x1="853" y1="300" x2="853" y2="480"/>
+  <line x1="888" y1="300" x2="888" y2="480"/>
+  <line x1="923" y1="300" x2="923" y2="480"/>
+  <line x1="958" y1="300" x2="958" y2="480"/>
+</g>
+<text x="836" y="400" text-anchor="middle" fill="#a5d6a7" font-size="9">Zone output wires (24VAC)</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     ESP32  (center)
+══════════════════════════════════════════════════════════════ -->
+<rect x="170" y="320" width="280" height="220" rx="8" fill="#263238" stroke="#4fc3f7" stroke-width="2.5"/>
+<text x="310" y="348" text-anchor="middle" fill="#4fc3f7" font-size="13" font-weight="bold">ESP32-WROOM-32E</text>
+<text x="310" y="364" text-anchor="middle" fill="#4fc3f7" font-size="10">U1</text>
+<!-- GPIO list -->
+<text x="182" y="388" fill="#90caf9" font-size="9">GPIO 32,33,25,26,27,14,12,13</text>
+<text x="182" y="403" fill="#90a4ae" font-size="8">  → ULN2803A → relay coils K1-K8</text>
+<text x="182" y="422" fill="#90caf9" font-size="9">GPIO 23 → Status LED (330Ω)</text>
+<text x="182" y="440" fill="#90caf9" font-size="9">GPIO 0 → BOOT button</text>
+<text x="182" y="458" fill="#90caf9" font-size="9">TBD × 8 ← DIP switch (zone sel.)</text>
+<text x="182" y="476" fill="#90caf9" font-size="9">TBD × 2 ← Rotary (time sel.)</text>
+<text x="182" y="494" fill="#90caf9" font-size="9">TBD ← Start button input</text>
+<text x="182" y="512" fill="#90caf9" font-size="9">TBD → Start button LED</text>
+<text x="182" y="530" fill="#90a4ae" font-size="8">UART RX/TX ← CH340C (USB)</text>
+
+<!-- ESP32 → ULN2803A (coil drive) -->
+<line x1="450" y1="390" x2="490" y2="310" stroke="#4fc3f7" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#a-sig)"/>
+<text x="475" y="345" fill="#4fc3f7" font-size="9">GPIO → relay coils</text>
+
+<!-- +3.3V to ESP32 -->
+<line x1="1010" y1="360" x2="450" y2="360" stroke="#ce93d8" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#a-3v)"/>
+<text x="730" y="354" text-anchor="middle" fill="#ce93d8" font-size="9">+3.3V</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CH340C / USB-C  (top, connected to ESP32)
+══════════════════════════════════════════════════════════════ -->
+<rect x="170" y="220" width="200" height="80" rx="6" fill="#1a2a3a" stroke="#78909c" stroke-width="1.5"/>
+<text x="270" y="246" text-anchor="middle" fill="white"   font-size="11" font-weight="bold">CH340C + USB-C</text>
+<text x="270" y="262" text-anchor="middle" fill="#90a4ae" font-size="9">U2 / J1</text>
+<text x="270" y="278" text-anchor="middle" fill="#90a4ae" font-size="8">PC ←→ ESP32 via UART</text>
+<text x="270" y="292" text-anchor="middle" fill="#90a4ae" font-size="8">Auto-reset: Q1, Q2 (RTS/DTR)</text>
+<!-- CH340C → ESP32 -->
+<line x1="270" y1="300" x2="270" y2="320" stroke="#4fc3f7" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#a-sig)"/>
+<text x="282" y="314" fill="#4fc3f7" font-size="9">UART</text>
+<!-- +5V to CH340C -->
+<line x1="840" y1="150" x2="840" y2="260" stroke="#ef5350" stroke-width="1.5" stroke-dasharray="4,3"/>
+<line x1="840" y1="260" x2="370" y2="260" stroke="#ef5350" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a-5v)"/>
+<text x="605" y="254" text-anchor="middle" fill="#ef5350" font-size="9">+5V</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     ZONE OUTPUT TERMINALS  (bottom)
+══════════════════════════════════════════════════════════════ -->
+<rect x="628" y="480" width="360" height="72" rx="6" fill="#1e2e1e" stroke="#66bb6a" stroke-width="2"/>
+<text x="808" y="506" text-anchor="middle" fill="#66bb6a" font-size="12" font-weight="bold">J_ZONES  (Z1 – Z8)</text>
+<text x="808" y="524" text-anchor="middle" fill="#90a4ae" font-size="9">8-position 3.5mm screw terminal</text>
+<text x="808" y="542" text-anchor="middle" fill="#90a4ae" font-size="9">Each terminal = relay K1-K8 NO contact</text>
+<!-- zone out arrows hitting the terminal block -->
+<text x="808" y="558" text-anchor="middle" fill="#a5d6a7" font-size="8">↓ connects to irrigation solenoids ↓</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     J_COM terminal  (bottom left)
+══════════════════════════════════════════════════════════════ -->
+<rect x="160" y="480" width="220" height="72" rx="6" fill="#1e2e1e" stroke="#66bb6a" stroke-width="2"/>
+<text x="270" y="506" text-anchor="middle" fill="#66bb6a" font-size="12" font-weight="bold">J_COM  (COM / L2)</text>
+<text x="270" y="524" text-anchor="middle" fill="#90a4ae" font-size="9">Zone device common return</text>
+<text x="270" y="542" text-anchor="middle" fill="#90a4ae" font-size="9">= 24VAC L2 input (same node)</text>
+<text x="270" y="557" text-anchor="middle" fill="#546e7a" font-size="8">Solenoid return wires connect here</text>
+
+<!-- L2 wire down from source to J_COM -->
+<line x1="200" y1="108" x2="160" y2="108" stroke="#ffb74d" stroke-width="1.5" stroke-dasharray="3,3"/>
+<line x1="160" y1="108" x2="160" y2="480" stroke="#66bb6a" stroke-width="2.5" marker-end="url(#a-gnd)"/>
+<text x="148" y="300" text-anchor="middle" fill="#66bb6a" font-size="10" font-weight="bold" transform="rotate(-90,148,300)">24VAC L2 = COM return</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     J_PWR terminal  (shown at source)
+══════════════════════════════════════════════════════════════ -->
+<rect x="20" y="175" width="180" height="52" rx="6" fill="#2a1a00" stroke="#ffb74d" stroke-width="1.5"/>
+<text x="110" y="198" text-anchor="middle" fill="#ffb74d" font-size="11" font-weight="bold">J_PWR (2-position)</text>
+<text x="110" y="215" text-anchor="middle" fill="#90a4ae" font-size="9">24VAC L1 | L2 screw terminal</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     USER CONTROLS
+══════════════════════════════════════════════════════════════ -->
+
+<!-- DIP switch -->
+<rect x="20" y="590" width="220" height="90" rx="6" fill="#1a2a3a" stroke="#4fc3f7" stroke-width="1.5"/>
+<text x="130" y="614" text-anchor="middle" fill="#4fc3f7" font-size="12" font-weight="bold">SW_DIP  "Zones"</text>
+<text x="130" y="632" text-anchor="middle" fill="#90a4ae" font-size="9">8-position raised DIP switch</text>
+<text x="130" y="648" text-anchor="middle" fill="#90a4ae" font-size="9">Positions 1-8 = zone select</text>
+<text x="130" y="664" text-anchor="middle" fill="#90a4ae" font-size="9">Active LOW (pull-up to 3.3V)</text>
+<!-- DIP → ESP32 -->
+<line x1="240" y1="636" x2="300" y2="490" stroke="#81d4fa" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#a-ctl)"/>
+<text x="258" y="560" fill="#81d4fa" font-size="9">8× GPIO (TBD)</text>
+
+<!-- Rotary switch -->
+<rect x="260" y="590" width="220" height="90" rx="6" fill="#1a2a3a" stroke="#4fc3f7" stroke-width="1.5"/>
+<text x="370" y="614" text-anchor="middle" fill="#4fc3f7" font-size="12" font-weight="bold">SW_ROT  "Time"</text>
+<text x="370" y="632" text-anchor="middle" fill="#90a4ae" font-size="9">4-position binary rotary switch</text>
+<text x="370" y="648" text-anchor="middle" fill="#90a4ae" font-size="9">0=15min  1=30min  2=45min  3=60min</text>
+<text x="370" y="664" text-anchor="middle" fill="#90a4ae" font-size="9">2-bit BCD → 2× GPIO (TBD)</text>
+<!-- Rotary → ESP32 -->
+<line x1="370" y1="590" x2="340" y2="540" stroke="#81d4fa" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#a-ctl)"/>
+<text x="342" y="570" fill="#81d4fa" font-size="9">2× GPIO</text>
+
+<!-- Start button -->
+<rect x="500" y="590" width="220" height="90" rx="6" fill="#1a2a1a" stroke="#81c784" stroke-width="1.5"/>
+<text x="610" y="614" text-anchor="middle" fill="#81c784" font-size="12" font-weight="bold">SW_START  "Man. Start"</text>
+<text x="610" y="632" text-anchor="middle" fill="#90a4ae" font-size="9">22mm illuminated green push button</text>
+<text x="610" y="648" text-anchor="middle" fill="#90a4ae" font-size="9">Input: active LOW → GPIO (TBD)</text>
+<text x="610" y="664" text-anchor="middle" fill="#90a4ae" font-size="9">LED: GPIO (TBD) → 330Ω → LED</text>
+<!-- Button → ESP32 (input) -->
+<line x1="500" y1="636" x2="380" y2="510" stroke="#81d4fa" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#a-ctl)"/>
+<!-- ESP32 → button LED (output) -->
+<line x1="390" y1="516" x2="506" y2="642" stroke="#4fc3f7" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a-sig)"/>
+<text x="430" y="595" fill="#81d4fa" font-size="9">in/out GPIO</text>
+
+<!-- ══════════════════════════════════════════════════════════════
+     GND RAIL
+══════════════════════════════════════════════════════════════ -->
+<rect x="12" y="858" width="1276" height="22" rx="4" fill="#1a3a1a" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="640" y="874" text-anchor="middle" fill="#66bb6a" font-size="11" font-weight="bold">GND — Common ground rail (DC negative, all boards)</text>
+<!-- GND connections down from various blocks -->
+<g stroke="#66bb6a" stroke-width="1.5" stroke-dasharray="3,3" fill="none">
+  <line x1="550" y1="124" x2="550" y2="858"/>
+  <line x1="715" y1="124" x2="715" y2="780"/>
+  <line x1="310" y1="540" x2="310" y2="858"/>
+</g>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TITLE BLOCK
+══════════════════════════════════════════════════════════════ -->
+<rect x="12" y="840" width="1276" height="18" fill="#0a1620"/>
+<text x="640" y="853" text-anchor="middle" fill="#37474f" font-size="10">
+  SPRINKLER-8  |  WIRING DIAGRAM  |  REV 2  |  June 2026  |  Functional block diagram — not a full schematic
+</text>
+
+</svg>
+</body>
+</html>
