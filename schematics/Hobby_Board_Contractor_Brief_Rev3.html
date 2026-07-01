@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hobby Board — PCB Design Brief Rev 3</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f1923; color: #dde3ec; font-size: 14px; line-height: 1.6; }
+header { background: #0d2a42; border-bottom: 3px solid #4fc3f7; padding: 20px 32px; }
+header h1 { font-size: 1.8rem; color: #4fc3f7; }
+header p  { color: #90caf9; margin-top: 4px; font-size: 0.95rem; }
+.toc { background: #0d1f30; border: 1px solid #1a3a5c; border-radius: 8px; padding: 16px 20px; margin: 20px 32px; display: inline-block; min-width: 320px; }
+.toc h3 { color: #90caf9; margin-bottom: 8px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+.toc a { color: #4fc3f7; text-decoration: none; display: block; padding: 2px 0 2px 8px; font-size: 0.9rem; border-left: 2px solid transparent; }
+.toc a:hover { border-left-color: #4fc3f7; }
+main { padding: 0 32px 48px; max-width: 1200px; }
+h2 { color: #4fc3f7; font-size: 1.2rem; margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #1a3a5c; }
+h3 { color: #81c784; font-size: 1.0rem; margin: 22px 0 8px; }
+p  { margin-bottom: 10px; color: #b0bec5; }
+ul, ol { margin: 6px 0 12px 20px; color: #b0bec5; }
+li { margin-bottom: 4px; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 0.88rem; }
+th { background: #0d3a5c; color: #4fc3f7; padding: 9px 11px; text-align: left; border: 1px solid #1a4a7a; }
+td { padding: 8px 11px; border: 1px solid #1e2e3e; vertical-align: top; color: #b0bec5; }
+tr:nth-child(even) td { background: #0a1620; }
+tr:hover td { background: #112233; }
+.ref  { color: #ce93d8; font-family: monospace; font-weight: bold; }
+.lcsc { color: #ffb74d; font-family: monospace; }
+.note { color: #90a4ae; font-size: 0.85rem; }
+code  { background: #0a1620; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #a5d6a7; font-size: 0.88rem; }
+.warn { background: #2a1000; border-left: 4px solid #ff7043; padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; }
+.warn strong { color: #ff7043; }
+.info { background: #001a30; border-left: 4px solid #4fc3f7; padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; }
+.info strong { color: #4fc3f7; }
+.tip  { background: #001a00; border-left: 4px solid #81c784; padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; }
+.tip strong { color: #81c784; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0; }
+@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+.spec-block { background: #0a1825; border: 1px solid #1a2e40; border-radius: 8px; padding: 14px 16px; }
+.spec-block h4 { color: #4fc3f7; margin-bottom: 8px; font-size: 0.9rem; }
+.layout-img { width: 100%; max-width: 900px; border: 2px solid #1a3a5c; border-radius: 6px; margin: 16px 0; display: block; }
+@media print {
+  body { background: white; color: #111; }
+  th { background: #dde; color: #111; }
+  td, p, li { color: #333; }
+  .warn { background: #fff3f0; }
+  .info { background: #f0f8ff; }
+  .tip  { background: #f0fff0; }
+  a { color: #111; }
+  code { background: #eee; color: #111; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ESP32 8-Channel Relay Board &mdash; PCB Design Brief &nbsp;<small style="font-size:1rem;color:#90caf9;">Rev 3</small></h1>
+  <p>Hobby Board &nbsp;|&nbsp; Contractor Design Brief &nbsp;|&nbsp; July 2026</p>
+</header>
+
+<div class="toc">
+  <h3>Contents</h3>
+  <a href="#overview">1. System Overview</a>
+  <a href="#layout">2. Board Layout Reference</a>
+  <a href="#power">3. Power Architecture</a>
+  <a href="#relay">4. Relay Output Circuit</a>
+  <a href="#controls">5. User Controls</a>
+  <a href="#expander">6. I&sup2;C GPIO Expander</a>
+  <a href="#gpio">7. GPIO Assignments</a>
+  <a href="#connectors">8. Connectors &amp; Terminals</a>
+  <a href="#pcb">9. PCB Requirements</a>
+  <a href="#case">10. Enclosure / Case</a>
+  <a href="#bom">11. Suggested BOM</a>
+</div>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="overview">1. System Overview</h2>
+
+<div class="two-col">
+  <div class="spec-block">
+    <h4>Microcontroller</h4>
+    <ul>
+      <li>ESP32-WROOM-32E module</li>
+      <li>WiFi + Bluetooth, 4 MB flash, dual-core 240 MHz</li>
+      <li>USB-C programming via CH340C UART bridge with auto-reset</li>
+    </ul>
+  </div>
+  <div class="spec-block">
+    <h4>Power</h4>
+    <ul>
+      <li>24 VAC input — single 2-position screw terminal (J_PWR)</li>
+      <li>L1 and L2 independently fused (500 mA each)</li>
+      <li>Separate 1 A fuse on L1 &rarr; relay contact common bus</li>
+      <li>On-board: ~33 V DC &rarr; 5 V buck &rarr; 3.3 V LDO</li>
+    </ul>
+  </div>
+  <div class="spec-block">
+    <h4>Relay Outputs</h4>
+    <ul>
+      <li>8 &times; SPST-NO relays, 5 V coil, active HIGH</li>
+      <li>Driven by 8-channel Darlington array</li>
+      <li>All relay contact commons bussed to 24 VAC L1 via dedicated 1 A fuse</li>
+      <li>8-position 3.5 mm screw terminal (J_ZONES, Z1&ndash;Z8)</li>
+      <li>MOV snubber across each output contact</li>
+    </ul>
+  </div>
+  <div class="spec-block">
+    <h4>User Controls</h4>
+    <ul>
+      <li>8-pos raised DIP switch &mdash; &ldquo;Zones&rdquo; &mdash; via I&sup2;C expander</li>
+      <li>4-pos BCD rotary switch &mdash; &ldquo;Time&rdquo; &mdash; PCB-mount flat-blade slot</li>
+      <li>Illuminated push button &mdash; &ldquo;Man. Start&rdquo; &mdash; board-mounted</li>
+    </ul>
+  </div>
+  <div class="spec-block">
+    <h4>Board Topology</h4>
+    <ul>
+      <li>PCB split into two zones by a 25 mm case-divider band</li>
+      <li>Electronics zone: relays, ESP32, power supply, UART</li>
+      <li>Terminal zone: screw terminals, DIP switch, rotary, button</li>
+    </ul>
+  </div>
+  <div class="spec-block">
+    <h4>Enclosure</h4>
+    <ul>
+      <li>Split plastic case (ABS/PC, UL94 V-0 preferred)</li>
+      <li>Upper cover: electronics zone &mdash; closed</li>
+      <li>Lower cover: terminal zone &mdash; open front, accessible</li>
+      <li>Internal divider wall aligns with PCB 25 mm band</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="layout">2. Board Layout Reference</h2>
+
+<p>The image below shows the intended physical arrangement. The board is divided into two zones separated by a clear silkscreen boundary that aligns with the plastic case divider:</p>
+<ul>
+  <li><strong>Electronics zone:</strong> relays, ESP32 module, power supply, UART &mdash; not user-accessible</li>
+  <li><strong>Terminal zone:</strong> screw terminals, DIP switch, rotary switch, push button &mdash; fully user-accessible through lower cover</li>
+</ul>
+
+<img src="Rough Arrangement.jpg" alt="Board Layout Reference" class="layout-img">
+
+<div class="info">
+  <strong>Reference only.</strong> Use for zone intent and component grouping. Exact placement and routing to follow EasyEDA best practice and the mechanical constraints in Section 9.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="power">3. Power Architecture</h2>
+
+<h3>3.1 Input Terminal</h3>
+<p>Single 2-position 3.5 mm screw terminal (J_PWR). No barrel jack. No power-select jumper.</p>
+
+<table>
+  <tr><th>Terminal</th><th>Label</th><th>Connection</th></tr>
+  <tr><td class="ref">J_PWR pin 1</td><td>24 VAC L1</td><td>F1 (circuit power) in series; F3 (relay contact commons) also taps L1 — both fuses are independent</td></tr>
+  <tr><td class="ref">J_PWR pin 2</td><td>24 VAC L2</td><td>F2 (circuit power return) in series — same electrical node as J_COM (output common return)</td></tr>
+</table>
+
+<h3>3.2 Fusing</h3>
+
+<div class="warn">
+  <strong>Three independent fuses.</strong> Do not share or combine. A fault on the output side (F3) must not affect the electronics supply (F1).
+</div>
+
+<table>
+  <tr><th>Ref</th><th>Rating</th><th>Position</th><th>Protects</th></tr>
+  <tr><td class="ref">F1</td><td>500 mA</td><td>24 VAC L1 &rarr; bridge rectifier input</td><td>Electronic circuit (ESP32, relay coils, DC supply)</td></tr>
+  <tr><td class="ref">F2</td><td>500 mA</td><td>24 VAC L2 &rarr; bridge rectifier input</td><td>Electronic circuit return leg</td></tr>
+  <tr><td class="ref">F3</td><td>1 A</td><td>24 VAC L1 &rarr; relay contact common bus</td><td>Output contact side — independent of F1</td></tr>
+</table>
+
+<h3>3.3 DC Supply Chain</h3>
+<table>
+  <tr><th>Stage</th><th>Device</th><th>Output</th></tr>
+  <tr><td>Full-wave rectification</td><td>Bridge rectifier (D1) + 470 &micro;F bulk cap</td><td>~33 V DC</td></tr>
+  <tr><td>5 V regulation</td><td>Buck converter (U4) — fixed 5 V, 3 A</td><td>5 V DC (relay coils, CH340C, ULN2803A)</td></tr>
+  <tr><td>3.3 V regulation</td><td>LDO (U3)</td><td>3.3 V DC (ESP32, all logic)</td></tr>
+</table>
+
+<h3>3.4 Common Return Topology</h3>
+<p>J_PWR pin 2 (24 VAC L2) and J_COM are the <strong>same electrical node</strong>. Only one physical terminal is needed for both the AC return and the output common return. Label silkscreen <code>COM / L2</code>. Two screw positions provided on J_COM for convenient field wiring.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="relay">4. Relay Output Circuit</h2>
+
+<h3>4.1 Driver</h3>
+<p>8-channel Darlington array (U5) drives relay coils from 3.3 V ESP32 GPIOs. Active HIGH &mdash; GPIO HIGH energises relay.</p>
+<ul>
+  <li>Inputs 1&ndash;8 &rarr; GPIO4, 13, 14, 25, 26, 27, 32, 33 (relay channels 1&ndash;8)</li>
+  <li><strong>COM pin (pin 10) must connect to +5 V</strong> &mdash; flyback diode return rail</li>
+  <li>GND pin (pin 9) to GND</li>
+</ul>
+
+<h3>4.2 Relay Contact Wiring</h3>
+<table>
+  <tr><th>Net</th><th>Description</th></tr>
+  <tr><td><code>ZONE_PWR_BUS</code></td><td>24 VAC L1 &rarr; F3 (1 A) &rarr; relay K1&ndash;K8 contact COM pins (all 8 bussed)</td></tr>
+  <tr><td><code>ZONE_1 &hellip; ZONE_8</code></td><td>Relay K1&ndash;K8 NO contacts &rarr; J_ZONES Z1&ndash;Z8</td></tr>
+  <tr><td><code>ZONE_COM_RET</code></td><td>J_COM (24 VAC L2) &mdash; load return</td></tr>
+</table>
+
+<h3>4.3 Zone Output Terminal</h3>
+<p>Single 8-position 3.5 mm screw terminal block (J_ZONES), positions labeled Z1&ndash;Z8. Placed at the terminal-zone edge of the board.</p>
+
+<h3>4.4 MOV Snubbers</h3>
+<p>One 47 V MOV disc (RV1&ndash;RV8) across each relay NO contact and its common. Inductive load transient protection. Place as close as possible to J_ZONES.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="controls">5. User Controls</h2>
+
+<h3>5.1 Zone Select DIP Switch (SW_DIP)</h3>
+<table>
+  <tr><th>Item</th><th>Specification</th></tr>
+  <tr><td>Type</td><td>8-position DIP switch, raised (piano-key) style</td></tr>
+  <tr><td>Silkscreen</td><td>&ldquo;Zones&rdquo; above; positions 1&ndash;8 labeled below each switch</td></tr>
+  <tr><td>Logic</td><td>Active LOW. Switch inputs routed to I&sup2;C expander (Section 6) &mdash; <strong>not directly to ESP32 GPIOs</strong>. Internal pull-ups enabled in expander; no external pull-up resistors needed on switch lines.</td></tr>
+  <tr><td>Package</td><td>Through-hole or SMD &mdash; confirm switch height clears case lower cover</td></tr>
+</table>
+
+<h3>5.2 Time Select Rotary Switch (SW_ROT)</h3>
+<table>
+  <tr><th>Item</th><th>Specification</th></tr>
+  <tr><td>Type</td><td>4-position binary-coded (BCD) rotary switch</td></tr>
+  <tr><td>Silkscreen</td><td>&ldquo;Time&rdquo; above; time values at each detent: <code>15</code>, <code>30</code>, <code>45</code>, <code>60</code></td></tr>
+  <tr><td>Positions</td><td>0 = 15 min &nbsp;&bull;&nbsp; 1 = 30 min &nbsp;&bull;&nbsp; 2 = 45 min &nbsp;&bull;&nbsp; 3 = 60 min</td></tr>
+  <tr><td>Output</td><td>2-bit BCD &rarr; GPIO16 (bit 0), GPIO17 (bit 1). Active LOW, 10 k&Omega; pull-ups to 3.3 V.</td></tr>
+  <tr><td>Style</td><td>PCB-mount with flat-blade slot</td></tr>
+</table>
+
+<h3>5.3 Manual Start Button (SW_START)</h3>
+<table>
+  <tr><th>Item</th><th>Specification</th></tr>
+  <tr><td>Type</td><td>Illuminated momentary push button &mdash; green LED. Board mounted behind lower cover.</td></tr>
+  <tr><td>Silkscreen</td><td>&ldquo;Man. Start&rdquo;</td></tr>
+  <tr><td>Button input</td><td>GPIO18 &mdash; active LOW, 10 k&Omega; pull-up to 3.3 V</td></tr>
+  <tr><td>LED drive</td><td>GPIO19 &rarr; 330 &Omega; &rarr; LED anode &mdash; illuminated when run is active</td></tr>
+  <tr><td>Contact</td><td>Normally open, momentary</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="expander">6. I&sup2;C GPIO Expander</h2>
+
+<p>An MCP23008 (8-bit I&sup2;C GPIO expander) reads all 8 DIP switch inputs, freeing ESP32 GPIOs for other functions. The I&sup2;C bus uses GPIO21 (SDA) and GPIO22 (SCL) with 4.7 k&Omega; pull-ups to 3.3 V on each line.</p>
+
+<h3>6.1 Wiring</h3>
+<table>
+  <tr><th>MCP23008 Pin</th><th>Connection</th></tr>
+  <tr><td>VDD</td><td>3.3 V</td></tr>
+  <tr><td>GND</td><td>GND</td></tr>
+  <tr><td>SCL (pin 1)</td><td>ESP32 GPIO22 &mdash; 4.7 k&Omega; pull-up to 3.3 V</td></tr>
+  <tr><td>SDA (pin 2)</td><td>ESP32 GPIO21 &mdash; 4.7 k&Omega; pull-up to 3.3 V</td></tr>
+  <tr><td>A0, A1, A2 (pins 3&ndash;5)</td><td>All to GND &rarr; I&sup2;C address 0x20</td></tr>
+  <tr><td>RESET (pin 6)</td><td>3.3 V (active LOW &mdash; tie HIGH for normal operation)</td></tr>
+  <tr><td>GP0&ndash;GP7 (pins 10&ndash;17)</td><td>SW_DIP positions 1&ndash;8. Other side of each switch to GND. No external pull-ups needed &mdash; enable via GPPU register in firmware.</td></tr>
+</table>
+
+<h3>6.2 Firmware Note</h3>
+<ul>
+  <li>IODIR register (0x00) = 0xFF &mdash; all pins input</li>
+  <li>GPPU register (0x06) = 0xFF &mdash; all internal pull-ups enabled</li>
+  <li>Read GPIO register (0x09) &mdash; returns one byte; bit 0 = Zone 1 &hellip; bit 7 = Zone 8; 0 = switch ON (closed to GND)</li>
+</ul>
+
+<h3>6.3 Package</h3>
+<p>Use SOIC-18 for JLCPCB SMD assembly. Confirm LCSC part number and footprint before ordering.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="gpio">7. GPIO Assignments</h2>
+
+<div class="warn">
+  <strong>All assignments are final &mdash; do not deviate.</strong> GPIO12 is a strapping pin; it is NOT used as a relay output and must NOT be connected to the Darlington array.
+</div>
+
+<table>
+  <tr><th>GPIO</th><th>Function</th><th>Dir</th><th>Notes</th></tr>
+  <tr><td class="ref">GPIO4</td><td>Relay Channel 1</td><td>Out</td><td>&rarr; Darlington input 1</td></tr>
+  <tr><td class="ref">GPIO13</td><td>Relay Channel 2</td><td>Out</td><td>&rarr; Darlington input 2</td></tr>
+  <tr><td class="ref">GPIO14</td><td>Relay Channel 3</td><td>Out</td><td>&rarr; Darlington input 3</td></tr>
+  <tr><td class="ref">GPIO25</td><td>Relay Channel 4</td><td>Out</td><td>&rarr; Darlington input 4</td></tr>
+  <tr><td class="ref">GPIO26</td><td>Relay Channel 5</td><td>Out</td><td>&rarr; Darlington input 5</td></tr>
+  <tr><td class="ref">GPIO27</td><td>Relay Channel 6</td><td>Out</td><td>&rarr; Darlington input 6</td></tr>
+  <tr><td class="ref">GPIO32</td><td>Relay Channel 7</td><td>Out</td><td>&rarr; Darlington input 7</td></tr>
+  <tr><td class="ref">GPIO33</td><td>Relay Channel 8</td><td>Out</td><td>&rarr; Darlington input 8</td></tr>
+  <tr><td class="ref">GPIO12</td><td>Strapping pin &mdash; no relay</td><td>N/A</td><td>10 k&Omega; pull-down to GND only. Do not connect to Darlington or any driven net. Controls SDIO voltage at boot &mdash; must read LOW.</td></tr>
+  <tr><td class="ref">GPIO16</td><td>Rotary BCD bit 0</td><td>In</td><td>SW_ROT output A. 10 k&Omega; pull-up to 3.3 V.</td></tr>
+  <tr><td class="ref">GPIO17</td><td>Rotary BCD bit 1</td><td>In</td><td>SW_ROT output B. 10 k&Omega; pull-up to 3.3 V.</td></tr>
+  <tr><td class="ref">GPIO18</td><td>Man. Start button input</td><td>In</td><td>SW_START contact. Active LOW, 10 k&Omega; pull-up.</td></tr>
+  <tr><td class="ref">GPIO19</td><td>Man. Start button LED</td><td>Out</td><td>330 &Omega; &rarr; SW_START LED anode. Active HIGH.</td></tr>
+  <tr><td class="ref">GPIO21</td><td>I&sup2;C SDA</td><td>I/O</td><td>MCP23008 SDA. 4.7 k&Omega; pull-up to 3.3 V.</td></tr>
+  <tr><td class="ref">GPIO22</td><td>I&sup2;C SCL</td><td>Out</td><td>MCP23008 SCL. 4.7 k&Omega; pull-up to 3.3 V.</td></tr>
+  <tr><td class="ref">GPIO23</td><td>Status LED</td><td>Out</td><td>330 &Omega; &rarr; LED anode. Active HIGH.</td></tr>
+  <tr><td class="ref">GPIO1 / TXD0</td><td>UART TX</td><td>Out</td><td>&rarr; CH340C RXD</td></tr>
+  <tr><td class="ref">GPIO3 / RXD0</td><td>UART RX</td><td>In</td><td>&larr; CH340C TXD</td></tr>
+  <tr><td class="ref">GPIO0 / IO0</td><td>Boot select</td><td>I/O</td><td>10 k&Omega; pull-up to 3.3 V. BOOT button to GND. Auto-reset circuit uses this pin.</td></tr>
+  <tr><td class="ref">EN</td><td>Chip enable / reset</td><td>In</td><td>10 k&Omega; pull-up to 3.3 V. RST button to GND. Auto-reset circuit uses this pin.</td></tr>
+  <tr><td class="ref">MCP23008 GP0&ndash;GP7</td><td>DIP switch Zone 1&ndash;8</td><td>In</td><td>Not ESP32 GPIOs &mdash; routed to I&sup2;C expander (Section 6). Internal pull-ups used.</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="connectors">8. Connectors &amp; Terminals</h2>
+
+<table>
+  <tr><th>Ref</th><th>Type</th><th>Pos</th><th>Label</th><th>Notes</th></tr>
+  <tr>
+    <td class="ref">J_PWR</td>
+    <td>3.5 mm screw terminal</td><td>2</td><td>L1 / L2</td>
+    <td class="note">Only AC input. Terminal zone, accessible from outside case.</td>
+  </tr>
+  <tr>
+    <td class="ref">J_ZONES</td>
+    <td>3.5 mm screw terminal</td><td>8</td><td>Z1&ndash;Z8</td>
+    <td class="note">Relay NO contacts. Terminal zone, accessible from outside case.</td>
+  </tr>
+  <tr>
+    <td class="ref">J_COM</td>
+    <td>3.5 mm screw terminal</td><td>2</td><td>COM / L2</td>
+    <td class="note">Output common return. Electrically same node as J_PWR L2. Two positions for daisy-chain wiring.</td>
+  </tr>
+  <tr>
+    <td class="ref">J1 (USB-C)</td>
+    <td>USB-C 16-pin</td><td>&mdash;</td><td>USB</td>
+    <td class="note">Programming only. Located on electronics side of board (accessible through case).</td>
+  </tr>
+  <tr>
+    <td class="ref">SW1</td>
+    <td>6 mm tact switch</td><td>&mdash;</td><td>BOOT</td>
+    <td class="note">Internal. IO0 to GND for firmware flash mode.</td>
+  </tr>
+  <tr>
+    <td class="ref">SW2</td>
+    <td>6 mm tact switch</td><td>&mdash;</td><td>RST</td>
+    <td class="note">Internal.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="pcb">9. PCB Requirements</h2>
+
+<h3>9.1 Board Zones</h3>
+
+<div class="warn">
+  <strong>Critical dimension:</strong> The terminal zone must extend <strong>25 mm beyond the electronics zone</strong>. This clearance fits the internal case divider wall. No components within 5 mm of the divider boundary on either side.
+</div>
+
+<ul>
+  <li>Mark the electronics / terminal boundary on the silkscreen with a dashed line</li>
+  <li>All screw terminals (J_PWR, J_ZONES, J_COM), SW_DIP, SW_ROT, and SW_START within the terminal zone</li>
+  <li>All relay bodies, ESP32 module, and power supply ICs within the electronics zone</li>
+</ul>
+
+<h3>9.2 Layer Stack and General Rules</h3>
+<ul>
+  <li>2-layer PCB minimum. 4-layer if routing density requires.</li>
+  <li>ESP32 antenna keep-out: 15 mm copper-free zone on all layers around module antenna end</li>
+  <li>LM2596 switching loop: keep tight, no signal traces in that region</li>
+  <li>GND flood fill both layers, via-stitched. Star ground between AC rectifier section and DC logic GND.</li>
+  <li>ULN2803A COM pin (pin 10) must connect to +5 V &mdash; do not leave floating</li>
+  <li>GPIO12: 10 k&Omega; pull-down to GND, no other connections</li>
+  <li>USB-C CC1 and CC2 pins: 5.1 k&Omega; to GND each</li>
+  <li>Auto-reset: Q1 base &rarr; CH340C RTS# via 10 k&Omega; + 100 nF to GND; Q2 base &rarr; CH340C DTR# via 10 k&Omega; + 100 nF to GND</li>
+</ul>
+
+<h3>9.3 Clearance</h3>
+<table>
+  <tr><th>Net type</th><th>Min clearance</th></tr>
+  <tr><td>24 VAC traces (F1/F2/F3 paths) to any DC logic trace</td><td>3 mm</td></tr>
+  <tr><td>Relay contact traces (switched 24 VAC) to DC logic</td><td>3 mm</td></tr>
+  <tr><td>General (non-HV)</td><td>0.2 mm</td></tr>
+  <tr><td>Board edge (copper)</td><td>0.3 mm</td></tr>
+  <tr><td>Board edge (components)</td><td>0.5 mm</td></tr>
+  <tr><td>Mounting holes (M3)</td><td>5 mm from all copper</td></tr>
+</table>
+
+<h3>9.4 Trace Widths</h3>
+<table>
+  <tr><th>Net</th><th>Min width</th></tr>
+  <tr><td>24 VAC input traces (F1, F2 paths to bridge rectifier)</td><td>1.5 mm</td></tr>
+  <tr><td>Relay contact traces (F3, commons bus, Z1&ndash;Z8)</td><td>1.5 mm</td></tr>
+  <tr><td>+5 V bus</td><td>0.8 mm</td></tr>
+  <tr><td>+3.3 V bus</td><td>0.5 mm</td></tr>
+  <tr><td>GPIO signals, I&sup2;C, UART</td><td>0.2 mm</td></tr>
+  <tr><td>USB D+ / D&minus; (matched length pair)</td><td>0.2 mm</td></tr>
+</table>
+
+<h3>9.5 Board Spec</h3>
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Layers</td><td>2</td></tr>
+  <tr><td>Material</td><td>FR4, 1.6 mm</td></tr>
+  <tr><td>Surface finish</td><td>ENIG</td></tr>
+  <tr><td>Copper weight</td><td>1 oz both layers</td></tr>
+  <tr><td>Solder mask</td><td>Green, both sides</td></tr>
+  <tr><td>Target size</td><td>~200 mm &times; 80 mm (electronics zone ~175 mm + 25 mm terminal zone). Adjust to fit.</td></tr>
+  <tr><td>Mounting holes</td><td>4 &times; M3 (3.2 mm drill, 6.5 mm pad) at corners</td></tr>
+  <tr><td>Fiducials</td><td>Minimum 3 on top copper for PCBA alignment</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="case">10. Enclosure / Case</h2>
+
+<table>
+  <tr><th>Section</th><th>Covers</th><th>Access</th></tr>
+  <tr>
+    <td><strong>Upper cover</strong></td>
+    <td>Relays, ESP32, power supply, UART, USB-C port</td>
+    <td>Closed. Cut-out for USB-C port.</td>
+  </tr>
+  <tr>
+    <td><strong>Lower cover</strong></td>
+    <td>J_PWR, J_ZONES, J_COM, SW_DIP, SW_ROT, SW_START</td>
+    <td>Open front &mdash; screw terminals and controls accessible without removing case</td>
+  </tr>
+</table>
+
+<ul>
+  <li>Internal divider wall sits in the 25 mm PCB boundary band. Slots or notches for relay contact wiring crossing between zones.</li>
+  <li>Case mounts to M3 standoffs at board corners</li>
+  <li>Material: ABS or PC, UL94 V-0 preferred</li>
+  <li>DIN rail clip on base desirable but not required</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="bom">11. Suggested BOM</h2>
+
+<p>Substitutions acceptable if electrical and mechanical specs are met. Prefer LCSC Basic parts to minimise JLCPCB extended component surcharges.</p>
+
+<h3>ICs &amp; Modules</h3>
+<table>
+  <tr><th>Ref</th><th>Description</th><th>LCSC</th><th>Qty</th><th>Notes</th></tr>
+  <tr><td class="ref">U1</td><td>ESP32-WROOM-32E module</td><td class="lcsc">C701341</td><td>1</td><td class="note">4 MB flash. Antenna keep-out 15 mm.</td></tr>
+  <tr><td class="ref">U2</td><td>CH340C USB-UART, SOP-16</td><td class="lcsc">C84681</td><td>1</td><td class="note">Internal oscillator &mdash; no crystal.</td></tr>
+  <tr><td class="ref">U3</td><td>AMS1117-3.3 LDO, SOT-223</td><td class="lcsc">C6186</td><td>1</td><td class="note">3.3 V, 1 A.</td></tr>
+  <tr><td class="ref">U4</td><td>LM2596S-5.0 buck converter, TO-263-5</td><td class="lcsc">C2621</td><td>1</td><td class="note">Fixed 5 V, 3 A, 40 V input max.</td></tr>
+  <tr><td class="ref">U5</td><td>ULN2803A Darlington array, SOP-18</td><td class="lcsc">C56026</td><td>1</td><td class="note">COM pin (10) &rarr; +5 V. Do not leave floating.</td></tr>
+  <tr><td class="ref">U6</td><td>MCP23008 I&sup2;C GPIO expander, SOIC-18</td><td class="lcsc">Verify on LCSC</td><td>1</td><td class="note">8-bit I&sup2;C expander. Address 0x20 (A0/A1/A2 to GND). SOIC-18 for SMD assembly.</td></tr>
+</table>
+
+<h3>Relays &amp; Semiconductors</h3>
+<table>
+  <tr><th>Ref</th><th>Description</th><th>LCSC</th><th>Qty</th><th>Notes</th></tr>
+  <tr><td class="ref">K1&ndash;K8</td><td>HF46F-G/5-HS1 relay, 5 V coil, SMD</td><td class="lcsc">C165255</td><td>8</td><td class="note">SPST-NO. G5NB-compatible footprint. Verify C165255 &mdash; not C128511 (capacitor).</td></tr>
+  <tr><td class="ref">D1</td><td>MB10F bridge rectifier, MBS</td><td class="lcsc">C441951</td><td>1</td><td class="note">1 A / 1000 V.</td></tr>
+  <tr><td class="ref">D2</td><td>1N5822 Schottky, DO-201 or SMD equiv.</td><td class="lcsc">Verify on LCSC</td><td>1</td><td class="note">LM2596 catch diode, 3 A / 40 V.</td></tr>
+  <tr><td class="ref">D3</td><td>USBLC6-2SC6 TVS array, SOT-23-6</td><td class="lcsc">C2827693</td><td>1</td><td class="note">USB D+/D&minus; ESD protection.</td></tr>
+  <tr><td class="ref">Q1, Q2</td><td>MMBT3904 NPN, SOT-23</td><td class="lcsc">C20526</td><td>2</td><td class="note">Auto-reset circuit (RTS/DTR &rarr; EN/IO0).</td></tr>
+  <tr><td class="ref">RV1&ndash;RV8</td><td>MOV 47 V disc, 5 mm</td><td class="lcsc">Search: MOV 47V disc</td><td>8</td><td class="note">Across each relay output contact. Inductive load protection.</td></tr>
+</table>
+
+<h3>Fuses</h3>
+<table>
+  <tr><th>Ref</th><th>Description</th><th>LCSC</th><th>Qty</th><th>Notes</th></tr>
+  <tr><td class="ref">F1, F2</td><td>500 mA PTC polyfuse</td><td class="lcsc">Verify on LCSC</td><td>2</td><td class="note">L1 and L2 circuit power fuses. One per AC leg.</td></tr>
+  <tr><td class="ref">F3</td><td>1 A PTC polyfuse</td><td class="lcsc">Verify on LCSC</td><td>1</td><td class="note">L1 &rarr; relay contact common bus. Independent of F1.</td></tr>
+  <tr><td class="ref">F4</td><td>500 mA PTC polyfuse, 0805</td><td class="lcsc">C386618</td><td>1</td><td class="note">USB VBUS protection.</td></tr>
+</table>
+
+<h3>Connectors &amp; Switches</h3>
+<table>
+  <tr><th>Ref</th><th>Description</th><th>LCSC</th><th>Qty</th><th>Notes</th></tr>
+  <tr><td class="ref">J_PWR</td><td>2-position 3.5 mm screw terminal</td><td class="lcsc">C8465 or equiv.</td><td>1</td><td class="note">AC power input. Label L1 / L2.</td></tr>
+  <tr><td class="ref">J_ZONES</td><td>8-position 3.5 mm screw terminal</td><td class="lcsc">Ganged 2-pos &times; 4 or 8-pos block</td><td>1</td><td class="note">Label Z1&ndash;Z8.</td></tr>
+  <tr><td class="ref">J_COM</td><td>2-position 3.5 mm screw terminal</td><td class="lcsc">C8465 or equiv.</td><td>1</td><td class="note">Label COM / L2. Both pins same node.</td></tr>
+  <tr><td class="ref">J1</td><td>USB-C receptacle, 16-pin SMD</td><td class="lcsc">C165948</td><td>1</td><td class="note">Verify footprint before ordering.</td></tr>
+  <tr><td class="ref">SW_DIP</td><td>8-pos DIP switch, raised / piano-key style</td><td class="lcsc">Search: 8P DIP raised</td><td>1</td><td class="note">Confirm switch height clears lower cover. No external pull-ups needed (MCP23008 internal).</td></tr>
+  <tr><td class="ref">SW_ROT</td><td>4-pos BCD rotary switch, PCB-mount, flat-blade slot</td><td class="lcsc">Search: BCD rotary 4 position PCB</td><td>1</td><td class="note">4 clear detents. Print 15/30/45/60 on silkscreen at each position.</td></tr>
+  <tr><td class="ref">SW_START</td><td>Illuminated momentary push button, green LED, board-mount</td><td class="lcsc">Search: illuminated push button green PCB mount</td><td>1</td><td class="note">Board mounted behind lower cover. Momentary NO contact. LED: 330 &Omega; series from GPIO19.</td></tr>
+  <tr><td class="ref">SW1</td><td>BOOT push button, 6 mm tact</td><td class="lcsc">C318884</td><td>1</td><td class="note">IO0 to GND. Internal.</td></tr>
+  <tr><td class="ref">SW2</td><td>RST push button, 6 mm tact</td><td class="lcsc">C318884</td><td>1</td><td class="note">EN to GND. Internal.</td></tr>
+</table>
+
+<h3>Passives &amp; Indicators</h3>
+<table>
+  <tr><th>Ref</th><th>Value</th><th>Pkg</th><th>Qty</th><th>Notes</th></tr>
+  <tr><td class="ref">LED1&ndash;8</td><td>Red LED</td><td class="lcsc">C84256 / 0805</td><td>8</td><td class="note">Zone active indicators. +5 V &rarr; 470 &Omega; &rarr; anode.</td></tr>
+  <tr><td class="ref">LED9</td><td>Green LED</td><td class="lcsc">C72043 / 0805</td><td>1</td><td class="note">Status. GPIO23 &rarr; 330 &Omega; &rarr; anode.</td></tr>
+  <tr><td class="ref">R1, R2</td><td>5.1 k&Omega;</td><td>0402</td><td>2</td><td class="note">USB-C CC1 / CC2 to GND.</td></tr>
+  <tr><td class="ref">R3, R4</td><td>10 k&Omega;</td><td>0402</td><td>2</td><td class="note">IO0 and EN pull-ups to 3.3 V.</td></tr>
+  <tr><td class="ref">R5</td><td>10 k&Omega;</td><td>0402</td><td>1</td><td class="note">GPIO12 pull-down to GND &mdash; strapping pin, mandatory.</td></tr>
+  <tr><td class="ref">R6, R7</td><td>10 k&Omega;</td><td>0402</td><td>2</td><td class="note">Q1, Q2 base resistors (auto-reset).</td></tr>
+  <tr><td class="ref">R8&ndash;R15</td><td>470 &Omega;</td><td>0805</td><td>8</td><td class="note">Zone LED current limit.</td></tr>
+  <tr><td class="ref">R16</td><td>330 &Omega;</td><td>0805</td><td>1</td><td class="note">Status LED current limit.</td></tr>
+  <tr><td class="ref">R17</td><td>330 &Omega;</td><td>0805</td><td>1</td><td class="note">SW_START LED current limit.</td></tr>
+  <tr><td class="ref">R18, R19</td><td>10 k&Omega;</td><td>0402</td><td>2</td><td class="note">SW_ROT BCD bit 0/1 pull-ups (GPIO16, GPIO17).</td></tr>
+  <tr><td class="ref">R20</td><td>10 k&Omega;</td><td>0402</td><td>1</td><td class="note">SW_START button input pull-up (GPIO18).</td></tr>
+  <tr><td class="ref">R21, R22</td><td>4.7 k&Omega;</td><td>0402</td><td>2</td><td class="note">I&sup2;C SDA / SCL pull-ups to 3.3 V.</td></tr>
+  <tr><td class="ref">C1</td><td>470 &micro;F / 50 V electrolytic</td><td>Radial</td><td>1</td><td class="note">Bulk filter after bridge rectifier.</td></tr>
+  <tr><td class="ref">C2</td><td>220 &micro;F / 10 V electrolytic</td><td>Radial</td><td>1</td><td class="note">Buck converter output filter.</td></tr>
+  <tr><td class="ref">C3, C4</td><td>10 &micro;F ceramic</td><td>0603</td><td>2</td><td class="note">LDO input / output.</td></tr>
+  <tr><td class="ref">C5</td><td>22 &micro;F ceramic</td><td>0603</td><td>1</td><td class="note">LDO output supplemental.</td></tr>
+  <tr><td class="ref">C6&ndash;C13</td><td>100 nF ceramic</td><td>0402</td><td>8</td><td class="note">Decoupling: IC power pins + Q1/Q2 bases.</td></tr>
+  <tr><td class="ref">L1</td><td>100 &micro;H, 1 A+</td><td>SMD/THT</td><td>1</td><td class="note">Buck converter switching inductor.</td></tr>
+</table>
+
+<div class="tip">
+  <strong>JLCPCB assembly note:</strong> Prefer parts marked Basic in LCSC to avoid extended component surcharges. Panel-mount and through-hole controls (SW_DIP, SW_ROT, SW_START) are hand-assembled &mdash; confirm they are excluded from the SMD assembly BOM.
+</div>
+
+</main>
+</body>
+</html>
