@@ -273,7 +273,10 @@ code  { background: #0a1620; padding: 2px 6px; border-radius: 3px; font-family: 
 <h2 id="gpio">7. GPIO Assignments</h2>
 
 <div class="warn">
-  <strong>All assignments are final &mdash; do not deviate.</strong> GPIO12 is a strapping pin; it is NOT used as a relay output and must NOT be connected to the Darlington array.
+  <strong>GPIO12 &mdash; hardware constraint:</strong> Must have a 10 k&Omega; pull-down to GND and must NOT be connected to the Darlington array or any driven net. This is a strapping pin that sets flash voltage at boot &mdash; it cannot be used as an output regardless of routing convenience.
+</div>
+<div class="info">
+  <strong>Routing flexibility:</strong> All other GPIO assignments reflect the current firmware configuration. If routing requires a change, flag it to the board owner &mdash; do not silently reroute. Most assignments can be moved provided firmware is updated to match.
 </div>
 
 <table>
